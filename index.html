@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+    <!-- IE浏览器的兼容-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="Keywords" content="中医，中成药推荐，自助查询，医学">
+    <meta name="Description" content="中医，中成药推荐，自助查询，医学">
+    <title>仙桃市智慧中医平台</title>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/caseHistory.css"/>
+    <link rel="stylesheet" href="css/leftFun.css">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <link href="image/titleLogo.jpg" rel="icon" type="image/x-ico">
+</head>
+<body>
+
+<div id="leftFun" class="toShow">
+    <div id="toHide" class="fa fa-2x fa-angle-double-right">
+    </div>
+    <div class="onMsg">
+        <div class="time">
+            <span id="nian"></span><span id="yue"></span><span id="ri"></span>
+        </div>
+        <div class="week">
+            <span id="xi"></span>
+        </div>
+    </div>
+
+    <div>
+        <div class="onMsg hosPro" onclick="newPatient()">
+            <div class="registration_icon">
+                <i class="fa fa-2x fa-file-text-o"></i>
+            </div>
+            <div class="registration">
+                挂号
+            </div>
+        </div>
+        <div class="onMsg hosPro">
+            <div class="registration_icon">
+                <i class="fa fa-2x fa-user-md"></i>
+            </div>
+            <div class="registration">
+                就诊
+            </div>
+        </div>
+        <div class="onMsg hosPro" id="docSee" onclick="toVerify()">
+            <div class="registration_icon">
+                <i class="fa fa-2x  fa-files-o"></i>
+            </div>
+            <div class="registration">
+                审方
+            </div>
+        </div>
+
+        <!--<div class="onMsg hosPro" id="statistics" onclick="toStatistics()">-->
+            <!--<div class="registration_icon">-->
+                <!--<i class="fa fa-2x  fa-bar-chart"></i>-->
+            <!--</div>-->
+            <!--<div class="registration">-->
+                <!--统计分析-->
+            <!--</div>-->
+        <!--</div>-->
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- 顶部的logo  -->
+        <div class="col-md-12" id="topMsg">
+            <div class="col-md-4">
+                <img src="image/xianLogo.png" width="400px" height="50px" alt="">
+            </div>
+            <div class="col-md-5">
+                <span id="toMark"></span>
+                <span id="hos"></span>
+                <span id="diet"></span>
+            </div>
+            <div class="col-md-3" style="text-align: right;padding-right: 0">
+                <span id="nowUser">当前用户 :</span>
+                <span id="docName"></span>
+                <span id="docId" style="display:none"></span>
+
+                <span id="quit" onclick="quit()">退出</span>
+            </div>
+
+        </div>
+
+        <!--  三个按钮 -->
+        <div class="col-md-12" id="btns">
+            <div class="col-md-2">
+
+            </div>
+
+
+        </div>
+
+        <!-- 左右两部分 -->
+        <div id="main" class="col-md-12">
+            <div class="col-md-2" style="padding:0">
+                <!--  候诊  -->
+                <div id="wait" class="col-md-12">
+                    <div class="col-md-12">
+
+                        <span class="col-md-7" style="padding:0">当日候诊患者</span>
+                        <span class="col-md-5" style="text-align: right">
+                                <i class="fa fa-refresh showRefresh" onclick="refurbishMsg()"></i>
+                            </span>
+
+                    </div>
+                    <div  id="patientMsg"  class="col-md-12">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 新建患者、 接诊和结束  -->
+                <div id="over" class="col-md-12">
+                    <div class="col-md-4" style="margin-left: -10px;">
+                        <button id="newPatient" class="btn btn-info btn-sm" onclick="newPatient()">新建</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button id="connectPatient" class="btn btn-style btn-sm">接诊</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button id="end" class="btn btn-sm">结束</button>
+                    </div>
+
+                </div>
+
+
+                <div id="condition" class="col-md-12" style="margin-top: 20px;">
+                    <div class="col-md-12" style="border-bottom: 1px solid #aaa;text-align: center;padding:2px 0;line-height: 28px;">
+                        <span class="col-md-7" style="padding:0">处方状态</span>
+                        <span class="col-md-5" style="text-align: right">
+                                <i  class="fa fa-refresh showRefresh" onclick="refurbishStateData()"></i>
+                            </span>
+
+                    </div>
+                    <div  id="conditionMsg"  style="padding: 0;" class="col-md-12">
+                        <ul>
+
+
+                        </ul>
+                    </div>
+                </div>
+
+
+
+                <!--   已诊  -->
+                <div id="already" class="col-md-12" style="margin-top: 20px;">
+                    <div class="col-md-12">
+                        当日已诊患者
+                    </div>
+                    <div  id="patientMsgYi"  class="col-md-12">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--  患者详细信息及操作内容  -->
+            <div class="col-md-10">
+                <div class="col-md-12"   id="buttons" style="background-color: #fff" >
+                        <button class="btn btn-primary" style="margin-left: 10px" onclick="caseHistory()" id="history">历史记录</button>
+                        <button style="margin-left: 10px" class="btn btn-style"  onclick="showCommon()" id="bingli">病历模板</button>
+                        <button  style="margin-left: 10px" class="btn btn-style2 add"  id="chufang">中医处方</button>
+                        <button  style="margin-left: 10px" class="btn btn-info" onclick="toAcupuncture()" id="acupuncture">针灸处方</button>
+                </div>
+                <!--  用户信息展示  -->
+                <div class="col-md-12" id="userMsg">
+
+                    <div class="col-md-2 p_l_item">
+                        <div id="visitId" style="display:none"></div>
+                        <div class="col-md-4 p_l_span n_p"><span>姓名 : </span></div>
+                        <div class="col-md-8 p_l_input n_p" style="overflow: hidden;text-align: center">
+                            <span id="yName"></span>
+                        </div>
+
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>性别 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input  id="ySex" class="pubilStyle" disabled="disabled" value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>年龄 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input  id="yAge"  class="pubilStyle"  disabled="disabled" value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>生日 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="birthday" class="pubilStyle"  disabled="disabled" type="text" value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>婚否 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="marriage" class="pubilStyle"  disabled="disabled" type="text" value=""/></div>
+                    </div>
+
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>民族 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="nation" class="pubilStyle"  disabled="disabled" value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>常住地 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="obode" class="pubilStyle"  disabled="disabled" value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>季节 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="season" class="pubilStyle"  disabled="disabled" value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>节气 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="solarTerms" class="pubilStyle"  disabled="disabled" value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>职业 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="job" class="pubilStyle"  disabled="disabled" value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>体重 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="uWeight" class="pubilStyle"  disabled="disabled"  value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item" id="perBox">
+                        <div class="col-md-4 p_l_span n_p"><span>孕否 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="pregnant" class="pubilStyle"  disabled="disabled"  value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>医保 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="medicalInsurance" class="pubilStyle"  disabled="disabled"  value=""/></div>
+                    </div>
+                    <div class="col-md-2 p_l_item">
+                        <div class="col-md-4 p_l_span n_p"><span>初诊 : </span></div>
+                        <div class="col-md-8 p_l_input n_p"><input id="indagation" class="pubilStyle"  disabled="disabled"  value=""/></div>
+                    </div>
+
+                </div>
+
+
+                <!--  主诉内容  -->
+                <div class="col-md-8" id="importMsg">
+
+
+                    <div class="col-md-12 boxInput" id="importInput">
+
+
+                        <span class="titleInput">主诉</span>
+                        <button id="choice" class="btn" data-toggle="modal" data-target="#myModal" >选择</button>
+                        <input type="text" id="action">
+                        <button type="button"  class="btn btn-style" id="discriminate" onclick="discriminateText()">症状辨证</button>
+
+                    </div>
+
+                    <div class="col-md-12 boxInput">
+
+                        <span class="titleInput">现病史</span>
+                        <div id="xian"  contenteditable="true">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 boxInput">
+
+                        <span class="titleInput">既往史</span>
+                        <div id="past"  contenteditable="true">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 boxInput">
+
+                        <span class="titleInput">个人史</span>
+                        <div id="personal" contenteditable="true">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 boxInput">
+
+                        <span class="titleInput">家族史</span>
+                        <div id="uFamily" contenteditable="true">
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12 boxInput">
+
+                        <span class="titleInput">望闻问切</span>
+                        <div id="wang"  contenteditable="true">
+
+                        </div>
+                    </div>
+
+                    <div id="bSymptom" class="col-md-12">
+                        <div class="col-md-1" ></div>
+                        <div class="col-md-10" id="symptomList">
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12 boxInput">
+
+                        <span class="titleInput">体格检查</span>
+                        <div id="physique" contenteditable="true">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 boxInput">
+
+                        <span class="titleInput">辅助检查</span>
+                        <div id="auxiliary" contenteditable="true">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <span>中医疾病1</span> <input id="zhongyi" type="text">
+                            <span class="onLeft3">证候</span> <input id="sym_text" type="text">
+                            <span class="onLeft3">西医疾病</span> <input id="xiyi" type="text">
+                        </div>
+                        <div class="col-md-12" style="margin-top: 8px;">
+                            <span>中医疾病2</span> <input id="zhongyi2" type="text">
+                            <span class="onLeft3">证候</span> <input id="sym_text2" type="text">
+                            <span class="onLeft3">西医疾病</span> <input id="xiyi2" type="text">
+                        </div>
+                        <div class="col-md-12" style="margin-top: 8px;">
+                            <span>中医疾病3</span> <input id="zhongyi3" type="text">
+                            <span class="onLeft3">证候</span> <input id="sym_text3" type="text">
+                            <span class="onLeft3">西医疾病</span> <input id="xiyi3" type="text">
+                        </div>
+                    </div>
+
+                    <!--   保存和清空  -->
+
+                    <div class="col-md-12" style="margin-top: 20px;">
+                        <div class="col-md-1">
+
+                        </div>
+                        <div id="removeOrSave" class="col-md-11">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <button class="btn" onclick="saveTemMsg()" id="saveTem">保存为模板</button>
+                                <button class="btn btn-style" onclick="saveMsg()" id="save">保存</button>
+                                <button class="btn" id="removes">清空</button>
+                            </div>
+                            <div class="col-md-3"></div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!--   右边相关症状   -->
+                <div class="col-md-4" id="rightMsg" style="padding-right: 0;margin-top: 10px;">
+                    <!--  选择科室  +  。。。。  -->
+                    <div class="col-md-12" style="margin-bottom: 3px;">
+                        <div class="col-md-5" style="padding: 0 3px;">
+                            <!--  科室要与"智能辨证" 和"智能疾病"相关联  -->
+                            <select onchange="getDeptVal(this)"  id="hosDept" class="form-control" style="padding: 2px;font-size: 16px;">
+                                <option value="1">内科</option>
+                                <option value="2">外科</option>
+                                <option value="3">妇产科</option>
+                                <option value="4">儿科</option>
+                                <option value="5">男科</option>
+                                <option value="6">肿瘤科</option>
+                                <option value="7">骨伤科</option>
+                                <option value="8">眼科</option>
+                                <option value="9">耳鼻喉科</option>
+                                <option value="10">皮肤科</option>
+                                <option value="11">传染科</option>
+                                <option value="12">神志科</option>
+                                <option value="13">口腔科</option>
+                                <option value="14">整脊科</option>
+                                <option value="15">肛肠科</option>
+                                <option value="16">治未病科</option>
+                            </select>
+                        </div>
+                        <div class="col-md-7" style="padding: 0 3px;position: relative">
+                            <!--   根据选择的科室  加载对应的症候或者疾病   跟下面的推导结果关联 -->
+                            <input type="text"  id="getIllName" class="form-control">
+                            <ul id="toList">
+                                <li>
+                                    <i>23</i>
+                                    <span>恶寒怕冷</span>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col-md-12" id="rightBottomMsg">
+                            <div class="col-md-12 rightBottomTitleMsg" onclick="getIllnessData(this)">
+                                <button class="btn btn-style" style="margin-left: 37%;" >智能辨病</button>
+                                <i class="fa fa-angle-double-down" id="botBtn"></i>
+                            </div>
+                            <div class="col-md-12" id="rightBSymMsg">
+                                <div class="col-md-12 list">
+                                    <div  id="bbSym">智能辨病查询中<img src="image/td.gif"> </div>
+                                    <ul id="polMsg2" class="yiji">
+
+
+                                    </ul>
+                                    <div class="col-md-12" id="toMore2" style="text-align: right;padding-right: 20px;">
+                                        <a href="javascript:void(0)" onclick="toMoreIll(this)"  style="color:blue;">展开更多</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="rightTopMsg">
+                            <div class="col-md-12 rightTopTitleMsg" style="display:none;" onclick="getRightData(this)">
+                                <button class="btn btn-style" style="margin-left: 37%;">智能辨证</button>
+                                <i class="fa fa-angle-double-down" id="topBtn"></i>
+                            </div>
+                            <div class="col-md-12" id="rightSymMsg">
+
+                                <div class="col-md-12 list">
+                                    <div id="btSym">智能辨证查询中<img src="image/td.gif"></div>
+                                    <ul id="polMsg" class="yiji">
+
+                                    </ul>
+                                    <div class="col-md-12"  id="toMore" style="text-align: right;padding-right: 20px;">
+                                        <a href="javascript:void(0)" onclick="toMoreList(this)" style="color:blue">展开更多</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <!--  结尾div -->
+</div>
+
+
+
+
+<!--    =========    版权信息    ==========     -->
+<iframe src="myPubilc/foot.html" style="width:100%;height: 66px;border:none;margin: 30px  0;"></iframe>
+
+
+<!-- 部位模态框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 1000px;">
+        <div class="modal-content" id="modelDetail">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="text-align: center">症状选择</h4>
+            </div>
+            <div class="modal-body" style="height: 540px;">
+                <div id="partLeft">
+                    <ul>
+                        <li> <a>00</a><b>常用</b></li>
+                        <li> <a>01</a><b>全身</b></li>
+                        <li> <a>02</a><b>头部</b></li>
+                        <li> <a>03</a><b>颈部</b></li>
+                        <li> <a>04</a><b>胸部</b></li>
+                        <li> <a>05</a><b>背部</b></li>
+                        <li> <a>06</a><b>腹部</b></li>
+                        <li> <a>07</a><b>四肢</b></li>
+                        <li> <a>08</a><b>男性下阴</b></li>
+                        <li> <a>09</a><b>女性下阴</b></li>
+                        <li> <a>10</a><b>二便</b></li>
+                        <li> <a>11</a><b>小儿症状</b></li>
+                    </ul>
+                </div>
+                <div id="partDetailMsg">
+
+
+                </div>
+                <div  id="partRight">
+                    <ul>
+                        <li> <a>1</a><b>外感类</b></li>
+                        <li> <a>2</a><b>肺大肠系</b></li>
+                        <li> <a>3</a><b>心脑系</b></li>
+                        <li> <a>4</a><b>脾胃系</b></li>
+                        <li> <a>5</a><b>肝胆系</b></li>
+                        <li> <a>6</a><b>肾膀胱系</b></li>
+                        <li> <a>7</a><b>气血津液系</b></li>
+                        <li> <a>8</a><b>经络肢体系</b></li>
+                        <li> <a>9</a><b>妇产科系</b></li>
+                        <li> <a>10</a><b>儿科系</b></li>
+                        <li> <a>11</a><b>眼科系</b></li>
+                        <li> <a>12</a><b>耳鼻喉科系</b></li>
+                    </ul>
+                </div>
+                <!--<div class="row">-->
+                    <!--<div class="col-md-1"></div>-->
+                    <!--<div id="partLeft" class="col-md-2" >-->
+                        <!--<ul>-->
+                            <!--<li> <a>00</a><b>常用</b></li>-->
+                            <!--<li> <a>01</a><b>全身</b></li>-->
+                            <!--<li> <a>02</a><b>头部</b></li>-->
+                            <!--<li> <a>03</a><b>颈部</b></li>-->
+                            <!--<li> <a>04</a><b>胸部</b></li>-->
+                            <!--<li> <a>05</a><b>背部</b></li>-->
+                            <!--<li> <a>06</a><b>腹部</b></li>-->
+                            <!--<li> <a>07</a><b>四肢</b></li>-->
+                            <!--<li> <a>08</a><b>男性下阴</b></li>-->
+                            <!--<li> <a>09</a><b>女性下阴</b></li>-->
+                            <!--<li> <a>10</a><b>二便</b></li>-->
+                            <!--<li> <a>11</a><b>小儿症状</b></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                    <!--<div id="partDetailMsg" class="col-md-9">-->
+
+
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!--  症状辨证弹框   -->
+<div class="modal fade" id="myModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabelTwo">
+    <div class="modal-dialog" role="document" style="width: 1000px;margin:20px auto;">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 8px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabelTwo" style="text-align: center">主症状选择</h4>
+            </div>
+            <div class="modal-body" style="padding:5px 20px;min-height:500px;">
+                <p style=" color: #000;font-size: 16px;font-weight: bold;">请选择其中一种主症状</p>
+                <div id="selSym" style="margin-bottom: 5px;">
+
+                </div>
+                <p class="cTitle" style=" color: #000;font-size: 16px;font-weight: bold;">请明确具体主症</p>
+                <div id="chaperonage">
+
+                </div>
+                <div id="threeSymList">
+                    <table class="table table-bordered">
+                        <tbody id="symTd">
+                        <tr>
+                            <td>主要</td>
+                            <td class="public_td Zmark">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>伴随</td>
+                            <td class="public_td Jmark">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>舌质</td>
+                            <td class="public_td SZmark">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>舌苔</td>
+                            <td class="public_td STmark">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>脉象</td>
+                            <td class="public_td MXmark">
+
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer"  style="text-align: left;padding:3px;margin: 4px 20px;background-color: #eee;">
+                <!--  痰热腑实，风痰上扰证  -->
+                <span style="text-align: left;display:inline-block; width: 90%;">
+                        <span id="tdSym">症状推导<img src="image/td.gif"> </span>
+                         <span id="symName"></span>
+                         <span id="syn_id" style="display:none"></span>
+                    </span>
+                <span>
+                           <!--<button onclick="removerTd()" type="button" class="btn">清空</button>-->
+                        <button style="padding: 5px 16px;" type="button" class="btn btn-warning btn-sm" onclick="toBianTwo()">推导</button>
+                    <!--<button id="nextPage"  disabled="disabled" onclick="toPrescription()" type="button" class="btn" style="background-color: #adadad">下一步</button>-->
+                     </span>
+
+            </div>
+            <div id="showBtn">
+                <button id="nextPage"  disabled="disabled" onclick="toPrescription()" type="button" class="btn btn-sm" style="margin-right: 10px;padding: 5px 18px;">下一步</button>
+                <button onclick="removerTd()" type="button" class="btn btn-sm" style="padding: 5px 15px;background-color: #20CCB6;">清空</button>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<!--病历模板3   -->
+<div class="modal fade" id="myModa3" tabindex="-1" role="dialog" aria-labelledby="myModalLabelThree">
+    <div class="modal-dialog" role="document" style="width: 1100px;margin:20px auto;">
+        <div class="modal-content" style="height: 600px;">
+            <div class="modal-header" style="padding:5px 15px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="myModalLabelThree">病历模板</h5>
+            </div>
+            <div class="modal-body clear" style="height: 560px;">
+                <div style="width: 18%;float:left;position: relative">
+                    <div id="listTem"></div>
+                    <div id="searchBL">
+                        <input id="searchVal" type="text" value="" placeholder="请输入搜索关键词">
+                        <a href="javascript:void(0)" id="searchBtn" class="glyphicon glyphicon-search" onclick="likeMsg()"></a>
+                    </div>
+                    <div class="list" >
+                        <ul id="temListData" class="yiji" style="border-top:1px solid  #6196bb;">
+                            <li id="inCommonUse">
+                                <i style="display: none">0</i>
+                                <a href="#" class="inactive toMark">常用</a>
+                            </li>
+                            <li id="internal">
+                                <i style="display: none">1</i>
+                                <a href="#" class="inactive toMark">内科</a>
+
+                            </li>
+                            <li id="surgery">
+                                <i style="display: none">2</i>
+                                <a href="#" class="inactive toMark">外科</a>
+
+                            </li>
+                            <li id="gynaecology">
+                                <i style="display: none">3</i>
+                                <a href="#" class="inactive toMark">妇科</a>
+
+                            </li>
+                            <li id="andrology">
+                                <i style="display: none">4</i>
+                                <a href="#" class="inactive toMark">男科</a>
+
+                            </li>
+                            <li id="paediatrics">
+                                <i style="display: none">5</i>
+                                <a href="#" class="inactive toMark">儿科</a>
+
+                            </li>
+                            <li id="orthopedics">
+                                <i style="display: none">6</i>
+                                <a href="#" class="inactive toMark">骨伤科</a>
+                            </li>
+                            <li id="ent">
+                                <i style="display: none">7</i>
+                                <a href="#" class="inactive toMark">耳鼻喉科</a>
+
+                            </li>
+                            <li id="ophthalmology">
+                                <i style="display: none">8</i>
+                                <a href="#" class="inactive toMark">眼科</a>
+                            </li>
+                            <li id="dermatology">
+                                <i style="display: none">9</i>
+                                <a href="#" class="inactive toMark">皮肤性病科</a>
+                            </li>
+                            <li id="chiropractic">
+                                <i style="display: none">10</i>
+                                <a href="#" class="inactive toMark">整脊科</a>
+
+                            </li>
+                            <li id="oncology">
+                                <i style="display: none">11</i>
+                                <a href="#" class="inactive toMark">肿瘤科</a>
+                            </li>
+                            <li id="psychiatry">
+                                <i style="display: none">12</i>
+                                <a href="#" class="inactive toMark">精神心理科</a>
+                            </li>
+                            <li id="proctology">
+                                <i style="display: none">13</i>
+                                <a href="#" class="inactive toMark">肛肠科</a>
+                            </li>
+                            <li id="infectious">
+                                <i style="display: none">14</i>
+                                <a href="#" class="inactive toMark">传染病科</a>
+                            </li>
+                            <li id="stomatology">
+                                <i style="display: none">15</i>
+                                <a href="#" class="inactive toMark">口腔科</a>
+                            </li>
+                            <li id="gotWell">
+                                <i style="display: none">16</i>
+                                <a href="#" class="inactive toMark">康复科</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div  id="showTemplet" class="container">
+                    <div>
+                            <span class="topTitle" style="margin-left: 3%">
+                            <span style="color:red;">模板标题</span>
+                            <input type="text" id="mTitle" value="">
+                        </span>
+                        <span class="topTitle" style="width: 25%">
+                            <span>选择科室</span>
+                            <select name="" id="selDept">
+                                <option value="1">内科</option>
+                                <option value="2">外科</option>
+                                <option value="3">妇科</option>
+                                <option value="4">男科</option>
+                                <option value="5">儿科</option>
+                                <option value="6">骨伤科</option>
+                                <option value="7">耳鼻喉科</option>
+                                <option value="8">眼科</option>
+                                <option value="9">皮肤性病科</option>
+                                <option value="10">整脊科</option>
+                                <option value="11">肿瘤科</option>
+                                <option value="12">精神心理科</option>
+                                <option value="13">肛肠科</option>
+                                <option value="14">传染病科</option>
+                                <option value="15">口腔科</option>
+                                <option value="16">康复科</option>
+                            </select>
+                        </span>
+                        <span class="longTitle">
+                            <span style="height: 20px;vertical-align: middle">选为常用模板</span>
+                            <input type="checkbox"  id="checkMsg" value="">
+                        </span>
+                        <span class="pubilcTitle">
+                            <span style="height: 20px;vertical-align: middle">设置为公用模板</span>
+                            <input  type="checkbox" id="checkPubilc">
+                        </span>
+                        <span class="newTemplet">
+                                <button class="btn btn-sm btn-style" onclick="newTemplet()">新建模板</button>
+                            </span>
+                    </div>
+                    <div style="width: 100%;margin-bottom: 10px;text-align: center">
+                        <span style="color:red">*红色标题为必填项</span>
+                    </div>
+                    <div class="row" style="width: 100%">
+                        <div   class="col-md-12" id="historyMsg">
+                            <div class="col-md-12 boxDiv" style="height:30px;line-height: 28px; ">
+                                <div class="col-md-1 showPostion" style="padding:0;color:red;">主诉</div>
+                                <div class="col-md-11" id="actiont"  contenteditable="true"></div>
+                            </div>
+                            <div class="col-md-12 boxDiv">
+                                <div class="col-md-1 showPostion" style="padding: 0;line-height: 48px;color:red;">现病史</div>
+                                <div class="col-md-11" id="xiant"  contenteditable="true">
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 boxDiv">
+                                <div class="col-md-1 showPostion" style="padding: 0;line-height: 30px;">既往史</div>
+                                <div class="col-md-11" id="pastt" contenteditable="true">
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 boxDiv">
+                                <div class="col-md-1 showPostion" style="padding: 0;line-height: 30px;">个人史</div>
+                                <div id="personalt" class="col-md-11" contenteditable="true">
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 boxDiv">
+                                <div class="col-md-1 showPostion" style="padding: 0;line-height: 30px;">家族史</div>
+                                <div id="uFamilyt" class="col-md-11" contenteditable="true">
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 boxDiv">
+                                <div class="col-md-1 showPostion" style="padding: 0;line-height: 82px;color:red;">望闻问切</div>
+                                <div id="wangt" class="col-md-11" contenteditable="true"></div>
+                            </div>
+                            <div class="col-md-12 boxDiv">
+                                <div class="col-md-1 showPostion" style="padding: 0;line-height: 64px;">体格检查</div>
+                                <div id="physiquet" class="col-md-11" contenteditable="true">
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 boxDiv">
+                                <div class="col-md-1" style="padding: 0;line-height: 43px;">辅助检查</div>
+                                <div id="auxiliaryt" class="col-md-11" contenteditable="true">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-12" style="margin-bottom: 10px;">
+                                    <div class="col-md-1 someTitle">中医疾病</div>
+                                    <div class="col-md-3 " id="zhongyit" contenteditable="true"></div>
+                                    <div class="col-md-1 someTitle">症候</div>
+                                    <div class="col-md-3" id="sym_textt" contenteditable="true"></div>
+                                    <div class="col-md-1 someTitle">西医疾病</div>
+                                    <div class="col-md-3" id="xiyit" contenteditable="true"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div id="toUse">
+                    <span class="promptMsg"></span>
+                    <span class="private">
+                            <button type="button" class="btn btn-style" onclick="savePrivate()">设为私用模板</button>
+                        </span>
+                    <button type="button" class="btn btn-warning saveBtn" onclick="saveTemplet()">保存模板</button>
+                    <button type="button" class="btn btn-primary" onclick="toUse()">使用模板</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--保存病历  -->
+<div class="modal fade" id="myModa4" tabindex="-1" role="dialog" aria-labelledby="myModalLabelFour">
+    <div class="modal-dialog" role="document" style="width: 600px;margin:20px auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabelFour">填写模板基本信息</h4>
+            </div>
+            <div class="modal-body clear" style="min-height: 430px;">
+                <div>
+                    <span>模板标题</span><input type="text" id="newTemTitle">
+                    <span style="height: 20px;vertical-align: middle;margin-left: 35px;">选为常用模板</span>
+                    <input type="checkbox"  id="checkNewMsg" value="">
+                </div>
+                <div style="margin-top: 20px;">
+                        <span class="topTitle" style="display: inline-block;width: 30%">
+                            <span>选择科室</span>
+                            <select name="" id="selNewDept">
+                                <option value="1">内科</option>
+                                <option value="2">外科</option>
+                                <option value="3">妇科</option>
+                                <option value="4">男科</option>
+                                <option value="5">儿科</option>
+                                <option value="6">骨伤科</option>
+                                <option value="7">耳鼻喉科</option>
+                                <option value="8">眼科</option>
+                                <option value="9">皮肤性病科</option>
+                                <option value="10">整脊科</option>
+                                <option value="11">肿瘤科</option>
+                                <option value="12">精神心理科</option>
+                                <option value="13">肛肠科</option>
+                                <option value="14">传染病科</option>
+                                <option value="15">口腔科</option>
+                                <option value="16">康复科</option>
+                            </select>
+                        </span>
+                    <!--<span style="display: inline-block;color:red;">-->
+                    <!--注: （标题、主诉、现病史、望闻问切内容必须填写。）-->
+                    <!--</span>-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveNewTem()">保存模板</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--新建患者  -->
+<div class="modal fade" id="myModa5" tabindex="-1" role="dialog" aria-labelledby="myModalLabelFive">
+    <div class="modal-dialog" role="document" style="width: 1100px;margin:20px auto;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabelFive">录入新患者</h4>
+            </div>
+            <div class="modal-body clear" style="height: 450px;overflow-y: auto;background-color: #F2F2F2;">
+                <i id="hos_id" style="display:none"></i>
+                <div style="margin-bottom: 10px;">
+                    <span style="font-size: 16px;font-weight: bold;">患者基本信息填写(红色标题为必填项)</span>
+                    <span id="save_pat_id"></span>
+                </div>
+                <div>
+                        <span class="patientDetail">
+                            <span class="titleMsg Highlight">姓&nbsp;&nbsp;&nbsp;&nbsp;名</span><input id="pat_name" class="inputWith" type="text" value="">
+                        </span>
+                    <span class="patientDetail">
+                            <span class="titleMsg Highlight">身份证号</span><input id="pat_id_card" maxlength="18" class="inputWith" type="text" style="width: 148px"><input onclick="multiplexing()" type="button" value="复用" style="width: 40px;">
+                        </span>
+                    <span class="patientDetail">
+                            <span class="titleMsg Highlight" style="margin-left: 10px;">性&nbsp;&nbsp;&nbsp;&nbsp;别</span>
+                            <select name="" id="sex">
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                        </span>
+                    <span class="patientDetail">
+                            <span class="titleMsg Highlight">出生日期</span><input id="pat_born" disabled="disabled" class="inputWith" type="text" value="" placeholder="yyyy-mm-dd">
+                        </span>
+
+                    <span class="patientDetail">
+                            <span class="titleMsg">民&nbsp;&nbsp;&nbsp;&nbsp;族</span><input id="pat_nation" class="inputWith" type="text" value="">
+                        </span>
+
+                    <span class="patientDetail">
+                                <span class="titleMsg">社保号</span><input id="pat_s_id" class="inputWith" type="text" value="">
+                        </span>
+                    <span class="patientDetail">
+                            <span class="titleMsg" style="margin-left: 10px;">职&nbsp;&nbsp;&nbsp;&nbsp;业</span>
+                            <select name="" id="patientJob">
+                                <option value="务农">务农</option>
+                                    <option value="制造">制造</option>
+                                    <option value="医疗">医疗</option>
+                                    <option value="金融">金融</option>
+                                    <option value="商业">商业</option>
+                                    <option value="文化">文化</option>
+                                    <option value="艺术">艺术</option>
+                                    <option value="法律">法律</option>
+                                    <option value="教育">教育</option>
+                                    <option value="行政">行政</option>
+                                    <option value="模特">模特</option>
+                                    <option value="空姐">空姐</option>
+                                    <option value="学生">学生</option>
+                                    <option value="IT">IT</option>
+                                    <option value="其他">其他</option>
+                            </select>
+                        </span>
+                    <span class="patientDetail">
+                            <span class="titleMsg">医保类别</span>
+                            <select name="" id="yiType">
+                                    <option value="城镇医保">城镇医保</option>
+                                    <option value="农村医保">农村医保</option>
+                            </select>
+                        </span>
+                    <span class="patientDetail patientDetails">
+                            <span class="titleMsg">省市区</span><select id="province"></select>
+                            <select id="city"></select>
+                            <select id="nations"></select>
+                        </span>
+                    <span class="patientDetail patientDetails">
+                                <span class="titleMsg" style="margin-left: 17px;">详细地址</span><input id="pat_address" style="width: 430px;" class="inputWith longMsg" type="text" value="湖北省仙桃市胡场镇河口村">
+                        </span>
+                    <span class="patientDetail patientDetails">
+                                <span class="titleMsg">公司名称</span><input id="pat_company" class="inputWith longMsg" type="text" value="">
+                        </span>
+                    <span class="patientDetail patientDetails">
+                                <span class="titleMsg" style="margin-left: 17px;">公司地址</span><input id="pat_work_address" style="width: 430px;" class="inputWith longMsg" type="text" value="">
+                        </span>
+                    <span class="patientDetail">
+                                <span class="titleMsg" >联系电话</span><input id="pat_phone" class="inputWith" type="tel" value="">
+                        </span>
+                    <span class="patientDetail">
+                                <span class="titleMsg" >单位电话</span><input id="pat_work_phone" class="inputWith" type="tel" value="">
+                        </span>
+                    <span class="patientDetail">
+                                <span class="titleMsg" style="width: 105px;">紧急联系人电话</span><input id="pat_eme_phone" style="width: 143px;" class="inputWith" type="text" value="">
+                        </span>
+                    <span class="patientDetail">
+                                <span class="titleMsg" >紧急联系人</span><input id="pat_eme_name" class="inputWith" type="text" value="">
+                        </span>
+                    <span class="patientDetail">
+                            <span class="titleMsg">婚姻状况</span>
+                             <select name="" id="pat_marital">
+                                    <option value="未婚">未婚</option>
+                                    <option value="已婚">已婚</option>
+                             </select>
+                        </span>
+
+                </div>
+
+                <div style="margin: 10px  0;">
+                    <span style="font-size: 16px;font-weight: bold;">患者就诊信息填写</span>
+                </div>
+                <div>
+                       <span class="patientDetail">
+                                <span class="titleMsg">是否初诊</span>
+                                <select name="" id="first">
+                                    <option value="0">初诊</option>
+                                    <option value="1">复诊</option>
+                                </select>
+                        </span>
+                    <span class="patientDetail">
+                                <span class="titleMsg">体重</span><input id="vis_weight" type="text" value="">
+                        </span>
+                    <span class="patientDetail">
+                                <span class="titleMsg">年龄</span><input id="vis_age" type="number" value="">
+                        </span>
+                    <span class="patientDetail">
+                            <span class="titleMsg">所在省份</span>
+                            <select id="provinceMsg">
+                                 <option value="北京">北京</option>
+                                    <option value="天津">天津</option>
+                                    <option value="上海">上海</option>
+                                    <option value="重庆">重庆</option>
+                                    <option value="河北">河北</option>
+                                    <option value="河南">河南</option>
+                                    <option value="云南">云南</option>
+                                    <option value="辽宁">辽宁</option>
+                                    <option value="黑龙江">黑龙江</option>
+                                    <option value="湖南">湖南</option>
+                                    <option value="安徽">安徽</option>
+                                    <option value="山东">山东</option>
+                                    <option value="新疆">新疆</option>
+                                    <option value="江苏">江苏</option>
+                                    <option value="浙江">浙江</option>
+                                    <option value="江西">江西</option>
+                                    <option value="湖北" selected="selected">湖北</option>
+                                    <option value="广西">广西</option>
+                                    <option value="甘肃">甘肃</option>
+                                    <option value="山西">山西</option>
+                                    <option value="内蒙古">内蒙古</option>
+                                    <option value="陕西">陕西</option>
+                                    <option value="吉林">吉林</option>
+                                    <option value="福建">福建</option>
+                                    <option value="贵州">贵州</option>
+                                    <option value="广东">广东</option>
+                                    <option value="青海">青海</option>
+                                    <option value="西藏">西藏</option>
+                                    <option value="四川省">四川省</option>
+                                    <option value="宁夏">宁夏</option>
+                                    <option value="海南">海南</option>
+                                    <option value="台湾">台湾</option>
+                                    <option value="香港">香港</option>
+                                    <option value="澳门">澳门</option>
+                            </select>
+                        </span>
+                    <span class="patientDetail">
+                                <span class="titleMsg">挂号时间</span><input id="vis_date"  type="date" value="">
+                        </span>
+                    <span class="patientDetail" id="conceiveBox">
+                                <span class="titleMsg">是否怀孕</span>
+                                <select  id="conceive">
+                                    <option value="0">未孕</option>
+                                    <option value="1">已孕</option>
+                                </select>
+                        </span>
+                    <span class="patientDetail">
+
+                        </span>
+                    <span class="patientDetail" id="onBox">
+
+                     </span>
+                    <span class="patientDetail">
+
+                        </span>
+                    <span class="patientDetail" style="margin-top: 10px;">
+                                <span class="titleMsg">机构名称</span><input id="institutionName" disabled="disabled" type="text" value="">
+                        </span>
+                    <span class="patientDetail" style="margin-top: 10px;">
+                                <span class="titleMsg">科室</span><input id="doc_dept" disabled="disabled" type="text" value="">
+                        </span>
+                    <span class="patientDetail" style="margin-top: 10px;">
+                                <span class="titleMsg">医生姓名</span><input id="doc_name" disabled="disabled" type="text" value="">
+                        </span>
+
+
+
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: left">
+                <button style="margin-left: 85%" type="button" class="btn btn-warning" onclick="emptyMsg()">清空</button>
+                <button id="gua"  style="margin-left: 3%" type="button" class="btn btn-primary" onclick="savePatient()">挂号</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModa6" tabindex="-1" role="dialog" aria-labelledby="myModalLabelSix">
+    <div class="modal-dialog" role="document" style="width: 1000px;margin:20px auto;">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 8px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabelSix" style="color:orange;">AI问诊导入</h4>
+            </div>
+            <div class="modal-body clear" style="padding:5px 12px;height:500px;">
+                <div id="sym_msg">
+
+                </div>
+                <div id="sym_history" class="clear">
+                    <p class="sym_historyTitle">
+                        AI详细问诊记录
+                    </p>
+                    <div id="sym_historyDetail">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="OKMsg"  onclick="OKMsg()" type="button" class="btn btn-info">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--  症状辨证弹框   -->
+<div class="modal fade" id="myModa7" tabindex="-1" role="dialog" aria-labelledby="myModalLabelSeven">
+    <div class="modal-dialog" role="document" style="width: 1000px;margin:20px auto;">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 8px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 style="text-align: center;" class="modal-title" id="myModalLabelSeven">智能疾病辨证</h4>
+            </div>
+            <div class="modal-body" style="padding:5px 12px;height:500px;">
+                <div id="illTitle">
+                    <span class="xuIllName">当前选择的疾病名称 : </span>
+                    <span class="xuIllName" id="xuIllName"></span>
+                </div>
+                <!--   更改成类型于表格的样式   主要  伴随  -->
+                <div id="illList">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <td>主要</td>
+                            <td id="td1"></td>
+                        </tr>
+                        <tr>
+                            <td>伴随</td>
+                            <td id="td2"></td>
+                        </tr>
+                        <tr>
+                            <td>舌质</td>
+                            <td id="td3"></td>
+                        </tr>
+                        <tr>
+                            <td>舌苔</td>
+                            <td id="td4"></td>
+                        </tr>
+                        <tr>
+                            <td>脉象</td>
+                            <td id="td5"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--<span onclick="toColor(this)" class="bsColor">发热</span>-->
+
+                </div>
+
+
+
+
+            </div>
+            <div class="modal-footer"  style="text-align: left; padding: 3px;margin: 4px 12px;background-color: #eee;">
+                <!--  痰热腑实，风痰上扰证  -->
+                <span style="text-align: left;display: inline-block;width: 90%;">
+                    <span id="tdIll">症状推导<img src="image/td.gif"> </span>
+                         <span id="illName"></span>
+                         <span id="ill_id" style="display:none"></span>
+                    </span>
+                <span>
+
+                        <button style="padding: 5px 16px;" type="button" id="derivation" class="btn btn-warning btn-sm" onclick="getIll()">推导</button>
+
+                     </span>
+
+            </div>
+            <div id="showBtn2">
+                <button id="illNextPage"  disabled="disabled" onclick="illPrescription()" type="button" class="btn btn-sm" style="background-color: #adadad;margin-right: 10px;padding: 5px 18px;">下一步</button>
+                <button type="button" class="btn btn-sm" onclick="removeIll()" style="padding: 5px 15px;background-color: #20CCB6;">清空</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<video src="">
+
+</video>
+
+<div id="prompts">
+    <p>
+        保存成功！
+    </p>
+</div>
+<script src="js/jquery-1.11.3.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/leftFun.js"></script>
+<script src="js/urlPrefix.js"></script>
+<script src="js/casHistory.js"></script>
+<script src="js/templet.js"></script>
+<script src="js/casHistoryRight.js"></script>
+<!--<script src="js/webSocket.js"></script>-->
+
+
+</body>
+</html>
